@@ -1,20 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author DillanAsbury
- */
+package gui3;
+import java.awt.Color;
+import java.io.*;
+import java.util.Scanner;
 public class EmployeeData extends javax.swing.JFrame {
-
     /**
      * Creates new form EmployeeData
      */
+    static String fileToRead;
+    static String writeToFile;
+    static String allLines;
+    
     public EmployeeData() {
         initComponents();
+        displayError.setVisible(false);
+        showAllCommField.setVisible(false);
     }
 
     /**
@@ -27,9 +26,18 @@ public class EmployeeData extends javax.swing.JFrame {
     private void initComponents() {
 
         panelMenu = new javax.swing.JPanel();
-        findEmployee = new javax.swing.JButton();
+        searchButton = new javax.swing.JButton();
+        searchBar = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         addEmployee = new javax.swing.JButton();
         employeeDataSytem = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        displayResult = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        displayError = new javax.swing.JLabel();
         panelAddEmployee = new javax.swing.JPanel();
         hourlyButton = new javax.swing.JButton();
         commissionedButton = new javax.swing.JButton();
@@ -39,28 +47,66 @@ public class EmployeeData extends javax.swing.JFrame {
         backButtSelEmpPan = new javax.swing.JButton();
         panelHourly = new javax.swing.JPanel();
         backButtHourPan = new javax.swing.JButton();
+        newEmployeeName = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        submitButtHourPan = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        displayData = new javax.swing.JTextArea();
+        newEmployeeID = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        newEmployeeHourlyRate = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
         panelCommissioned = new javax.swing.JPanel();
         backButtonCommPan = new javax.swing.JButton();
+        newEmployeeName1 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        newEmployeeID1 = new javax.swing.JTextField();
+        jLabel3CommPan = new javax.swing.JLabel();
+        newEmployeeBasePay = new javax.swing.JTextField();
+        submitButtCommPan = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        showAllCommField = new javax.swing.JTextArea();
+        showAllCommButt = new javax.swing.JButton();
         panelSalaried = new javax.swing.JPanel();
         backButtSalPan = new javax.swing.JButton();
-        panelFindEmployee = new javax.swing.JPanel();
-        searchBar = new javax.swing.JTextField();
-        searchButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        newEmployeeName2 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        newEmployeeID2 = new javax.swing.JTextField();
+        jLabel3CommPan1 = new javax.swing.JLabel();
+        newEmployeeWeeklySales = new javax.swing.JTextField();
+        submitButtSalPan = new javax.swing.JButton();
+        newEmployeeBasePay2 = new javax.swing.JTextField();
+        jLabel3CommPan2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
 
-        panelMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelMenu.setPreferredSize(new java.awt.Dimension(796, 470));
 
-        findEmployee.setText("Find Employee");
-        findEmployee.addActionListener(new java.awt.event.ActionListener() {
+        searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                findEmployeeActionPerformed(evt);
+                searchButtonActionPerformed(evt);
             }
         });
-        panelMenu.add(findEmployee, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 200, 260, 120));
+
+        searchBar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchBarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                searchBarMouseEntered(evt);
+            }
+        });
+        searchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBarActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("ENTER EMPLOYEE ID NUMBER TO SEARCH");
 
         addEmployee.setText("Add Employee");
         addEmployee.addActionListener(new java.awt.event.ActionListener() {
@@ -68,14 +114,90 @@ public class EmployeeData extends javax.swing.JFrame {
                 addEmployeeActionPerformed(evt);
             }
         });
-        panelMenu.add(addEmployee, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 260, 120));
 
         employeeDataSytem.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         employeeDataSytem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         employeeDataSytem.setText("EMPLOYEE DATA SYSTEM");
         employeeDataSytem.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         employeeDataSytem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        panelMenu.add(employeeDataSytem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 810, 180));
+
+        displayResult.setEditable(false);
+        displayResult.setColumns(20);
+        displayResult.setRows(1);
+        jScrollPane2.setViewportView(displayResult);
+
+        jLabel8.setText("TYPE:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-----------", "Commissioned", "Hourly", "Salaried", " " }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("ID:");
+
+        displayError.setText("* Please enter a 9 digit ID number.");
+
+        javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
+        panelMenu.setLayout(panelMenuLayout);
+        panelMenuLayout.setHorizontalGroup(
+            panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMenuLayout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+            .addGroup(panelMenuLayout.createSequentialGroup()
+                .addComponent(employeeDataSytem, javax.swing.GroupLayout.PREFERRED_SIZE, 810, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(panelMenuLayout.createSequentialGroup()
+                .addGap(280, 280, 280)
+                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addGroup(panelMenuLayout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(26, 26, 26)
+                                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(searchBar)
+                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(displayError, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        panelMenuLayout.setVerticalGroup(
+            panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMenuLayout.createSequentialGroup()
+                .addComponent(employeeDataSytem, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel12)
+                    .addComponent(displayError, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         getContentPane().add(panelMenu, "card4");
 
@@ -125,7 +247,8 @@ public class EmployeeData extends javax.swing.JFrame {
 
         getContentPane().add(panelAddEmployee, "card3");
 
-        panelHourly.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelHourly.setMinimumSize(new java.awt.Dimension(796, 470));
+        panelHourly.setPreferredSize(new java.awt.Dimension(796, 470));
 
         backButtHourPan.setText("BACK");
         backButtHourPan.addActionListener(new java.awt.event.ActionListener() {
@@ -133,11 +256,90 @@ public class EmployeeData extends javax.swing.JFrame {
                 backButtHourPanActionPerformed(evt);
             }
         });
-        panelHourly.add(backButtHourPan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        newEmployeeName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeNameActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Employee Name:");
+
+        submitButtHourPan.setText("Submit");
+        submitButtHourPan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitButtHourPanActionPerformed(evt);
+            }
+        });
+
+        displayData.setColumns(20);
+        displayData.setRows(5);
+        jScrollPane1.setViewportView(displayData);
+
+        newEmployeeID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeIDActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Employee ID Number:");
+
+        newEmployeeHourlyRate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeHourlyRateActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Hourly Rate :");
+
+        javax.swing.GroupLayout panelHourlyLayout = new javax.swing.GroupLayout(panelHourly);
+        panelHourly.setLayout(panelHourlyLayout);
+        panelHourlyLayout.setHorizontalGroup(
+            panelHourlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHourlyLayout.createSequentialGroup()
+                .addComponent(backButtHourPan)
+                .addContainerGap(733, Short.MAX_VALUE))
+            .addGroup(panelHourlyLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(panelHourlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(panelHourlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(submitButtHourPan, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                    .addComponent(newEmployeeName)
+                    .addComponent(newEmployeeID)
+                    .addComponent(newEmployeeHourlyRate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(100, 100, 100))
+        );
+        panelHourlyLayout.setVerticalGroup(
+            panelHourlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHourlyLayout.createSequentialGroup()
+                .addComponent(backButtHourPan)
+                .addGap(11, 11, 11)
+                .addGroup(panelHourlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelHourlyLayout.createSequentialGroup()
+                        .addGroup(panelHourlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(newEmployeeName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelHourlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(newEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelHourlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(newEmployeeHourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                .addComponent(submitButtHourPan)
+                .addGap(33, 33, 33))
+        );
 
         getContentPane().add(panelHourly, "card5");
-
-        panelCommissioned.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         backButtonCommPan.setText("BACK");
         backButtonCommPan.addActionListener(new java.awt.event.ActionListener() {
@@ -145,11 +347,116 @@ public class EmployeeData extends javax.swing.JFrame {
                 backButtonCommPanActionPerformed(evt);
             }
         });
-        panelCommissioned.add(backButtonCommPan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        newEmployeeName1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeName1ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Employee Name:");
+
+        jLabel7.setText("Employee ID Number:");
+
+        newEmployeeID1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeID1ActionPerformed(evt);
+            }
+        });
+
+        jLabel3CommPan.setText("Base Pay:");
+
+        newEmployeeBasePay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeBasePayActionPerformed(evt);
+            }
+        });
+
+        submitButtCommPan.setText("Submit");
+        submitButtCommPan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitButtCommPanActionPerformed(evt);
+            }
+        });
+
+        showAllCommField.setEditable(false);
+        showAllCommField.setColumns(20);
+        showAllCommField.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        showAllCommField.setRows(5);
+        jScrollPane3.setViewportView(showAllCommField);
+
+        showAllCommButt.setText("Show All Commissioned");
+        showAllCommButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showAllCommButtActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelCommissionedLayout = new javax.swing.GroupLayout(panelCommissioned);
+        panelCommissioned.setLayout(panelCommissionedLayout);
+        panelCommissionedLayout.setHorizontalGroup(
+            panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCommissionedLayout.createSequentialGroup()
+                .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCommissionedLayout.createSequentialGroup()
+                        .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(backButtonCommPan)
+                            .addGroup(panelCommissionedLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel3CommPan)
+                                    .addComponent(jLabel7))
+                                .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelCommissionedLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(newEmployeeID1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(newEmployeeBasePay, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCommissionedLayout.createSequentialGroup()
+                                        .addGap(4, 4, 4)
+                                        .addComponent(newEmployeeName1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE))
+                    .addGroup(panelCommissionedLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(submitButtCommPan)
+                        .addGap(41, 41, 41)))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCommissionedLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(showAllCommButt)
+                .addGap(137, 137, 137))
+        );
+        panelCommissionedLayout.setVerticalGroup(
+            panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCommissionedLayout.createSequentialGroup()
+                .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCommissionedLayout.createSequentialGroup()
+                        .addComponent(backButtonCommPan)
+                        .addGap(21, 21, 21)
+                        .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(newEmployeeName1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addGap(26, 26, 26)
+                        .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(newEmployeeID1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelCommissionedLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(submitButtCommPan))
+                            .addGroup(panelCommissionedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(newEmployeeBasePay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3CommPan))))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(showAllCommButt)
+                .addContainerGap())
+        );
 
         getContentPane().add(panelCommissioned, "card7");
-
-        panelSalaried.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         backButtSalPan.setText("BACK");
         backButtSalPan.addActionListener(new java.awt.event.ActionListener() {
@@ -157,29 +464,105 @@ public class EmployeeData extends javax.swing.JFrame {
                 backButtSalPanActionPerformed(evt);
             }
         });
-        panelSalaried.add(backButtSalPan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        getContentPane().add(panelSalaried, "card6");
+        jLabel10.setText("Employee Name:");
 
-        panelFindEmployee.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        searchBar.addActionListener(new java.awt.event.ActionListener() {
+        newEmployeeName2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchBarActionPerformed(evt);
+                newEmployeeName2ActionPerformed(evt);
             }
         });
-        panelFindEmployee.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 193, 678, 40));
 
-        searchButton.setText("Search");
-        panelFindEmployee.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 140, -1));
+        jLabel11.setText("Employee ID Number:");
 
-        jLabel2.setText("ENTER EMPLOYEE ID NUMBER:");
-        panelFindEmployee.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 220, -1));
+        newEmployeeID2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeID2ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("BACK");
-        panelFindEmployee.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 40));
+        jLabel3CommPan1.setText("Base Pay:");
 
-        getContentPane().add(panelFindEmployee, "card2");
+        newEmployeeWeeklySales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeWeeklySalesActionPerformed(evt);
+            }
+        });
+
+        submitButtSalPan.setText("Submit");
+        submitButtSalPan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitButtSalPanActionPerformed(evt);
+            }
+        });
+
+        newEmployeeBasePay2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newEmployeeBasePay2ActionPerformed(evt);
+            }
+        });
+
+        jLabel3CommPan2.setText("Weekly Sales:");
+
+        javax.swing.GroupLayout panelSalariedLayout = new javax.swing.GroupLayout(panelSalaried);
+        panelSalaried.setLayout(panelSalariedLayout);
+        panelSalariedLayout.setHorizontalGroup(
+            panelSalariedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSalariedLayout.createSequentialGroup()
+                .addGroup(panelSalariedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelSalariedLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3CommPan2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(newEmployeeWeeklySales, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelSalariedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(backButtSalPan)
+                        .addGroup(panelSalariedLayout.createSequentialGroup()
+                            .addGap(70, 70, 70)
+                            .addComponent(jLabel10)
+                            .addGap(6, 6, 6)
+                            .addComponent(newEmployeeName2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelSalariedLayout.createSequentialGroup()
+                            .addGap(38, 38, 38)
+                            .addComponent(jLabel11)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(newEmployeeID2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelSalariedLayout.createSequentialGroup()
+                            .addGap(117, 117, 117)
+                            .addComponent(jLabel3CommPan1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(newEmployeeBasePay2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelSalariedLayout.createSequentialGroup()
+                            .addGap(207, 207, 207)
+                            .addComponent(submitButtSalPan))))
+                .addGap(480, 480, 480))
+        );
+        panelSalariedLayout.setVerticalGroup(
+            panelSalariedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSalariedLayout.createSequentialGroup()
+                .addComponent(backButtSalPan)
+                .addGap(16, 16, 16)
+                .addGroup(panelSalariedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(newEmployeeName2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(panelSalariedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newEmployeeID2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(34, 34, 34)
+                .addGroup(panelSalariedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3CommPan1)
+                    .addComponent(newEmployeeBasePay2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(panelSalariedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newEmployeeWeeklySales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3CommPan2))
+                .addGap(18, 18, 18)
+                .addComponent(submitButtSalPan)
+                .addContainerGap())
+        );
+
+        getContentPane().add(panelSalaried, "card6");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -190,13 +573,8 @@ public class EmployeeData extends javax.swing.JFrame {
     }//GEN-LAST:event_addEmployeeActionPerformed
 
     private void searchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchBarActionPerformed
 
-    private void findEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findEmployeeActionPerformed
-        panelFindEmployee.setVisible(true);
-        panelMenu.setVisible(false);
-    }//GEN-LAST:event_findEmployeeActionPerformed
+    }//GEN-LAST:event_searchBarActionPerformed
 
     private void backButtSelEmpPanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtSelEmpPanActionPerformed
         panelAddEmployee.setVisible(false);
@@ -221,6 +599,8 @@ public class EmployeeData extends javax.swing.JFrame {
     private void backButtHourPanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtHourPanActionPerformed
         panelHourly.setVisible(false);
         panelAddEmployee.setVisible(true);
+        newEmployeeName.setText("");
+        displayData.setText("");
     }//GEN-LAST:event_backButtHourPanActionPerformed
 
     private void backButtonCommPanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonCommPanActionPerformed
@@ -232,6 +612,210 @@ public class EmployeeData extends javax.swing.JFrame {
         panelSalaried.setVisible(false);
         panelAddEmployee.setVisible(true);
     }//GEN-LAST:event_backButtSalPanActionPerformed
+
+    private void newEmployeeNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeNameActionPerformed
+
+    private void submitButtHourPanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtHourPanActionPerformed
+        String empName = newEmployeeName.getText();
+        String empID = newEmployeeID.getText();
+        String hourlyRate = newEmployeeHourlyRate.getText();
+        double rate = Double.parseDouble(hourlyRate);
+        writeToFile = "Name: "+ empName +"\tEmployee ID Number: "+ empID +"\tHourly Rate: " + hourlyRate+ "\n";
+        Employee aPerson = new HourlyEmployee(empID,empName,40, rate);
+        displayData.setText(aPerson.toString());
+        newEmployeeName.setText("");
+        newEmployeeID.setText("");
+        newEmployeeHourlyRate.setText("");
+        String data = writeToFile;
+        try
+        {
+            BufferedWriter reader = new BufferedWriter(new FileWriter(new File("/Users/DillanAsbury/Desktop/HourlyEmployees.txt"),true));
+            reader.write(data);
+            reader.newLine();
+            reader.close();
+            
+            
+            System.out.println("Done!!");
+        } catch(IOException Evt)
+                {
+                    System.out.println("Error is " + Evt);
+                }
+    }//GEN-LAST:event_submitButtHourPanActionPerformed
+
+    private void newEmployeeIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeIDActionPerformed
+
+    private void newEmployeeHourlyRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeHourlyRateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeHourlyRateActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        String empID = searchBar.getText();
+        int stringLength = empID.length();
+        
+        if(stringLength == 9)
+        {
+            
+            displayError.setVisible(false);
+            searchBar.setText("");
+            try
+            {
+                Scanner scanner = new Scanner(new File(fileToRead));
+                while(scanner.hasNextLine())
+                {
+                    String currentLine = scanner.nextLine();
+                    if(currentLine.contains("Employee ID Number: " + empID))
+                    {
+                        String result = currentLine.split("Name: ")[1];
+                        displayResult.setText("Employee Found!\nName: " + result);
+                    }
+                }
+            } catch(FileNotFoundException Evt)
+                    {
+                        System.out.println("ERROR IS "+ Evt);
+                    }
+            }
+        else
+        {
+            searchBar.setBackground((Color.red));
+            displayError.setVisible(true);
+        }
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void newEmployeeName1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeName1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeName1ActionPerformed
+
+    private void newEmployeeID1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeID1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeID1ActionPerformed
+
+    private void newEmployeeBasePayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeBasePayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeBasePayActionPerformed
+
+    private void submitButtCommPanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtCommPanActionPerformed
+        String empName = newEmployeeName1.getText();
+        String empID = newEmployeeID1.getText();
+        String hourlyRate = newEmployeeBasePay.getText();
+        double rate = Double.parseDouble(hourlyRate);
+        writeToFile = "Name: "+ empName +"\tEmployee ID Number: "+ empID +"\tBase Pay: " + hourlyRate+ "\n";
+        Employee aPerson = new HourlyEmployee(empID,empName,40, rate);
+        displayData.setText(aPerson.toString());
+        newEmployeeName1.setText("");
+        newEmployeeID1.setText("");
+        newEmployeeBasePay.setText("");
+        String data = writeToFile;
+        try
+        {
+            BufferedWriter reader = new BufferedWriter(new FileWriter(new File("/Users/DillanAsbury/Desktop/CommissionedEmployees.txt"),true));
+            reader.write(data);
+            reader.newLine();
+            reader.close();
+            
+            
+            System.out.println("Done!!");
+        } catch(IOException Evt)
+                {
+                    System.out.println("Error is " + Evt);
+                }
+    }//GEN-LAST:event_submitButtCommPanActionPerformed
+    
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        Object selected = jComboBox1.getSelectedItem();
+                if(selected.toString().equals("Commissioned"))
+                {
+                  fileToRead = "/Users/DillanAsbury/Desktop/CommissionedEmployees.txt";  
+                }
+                
+                else if(selected.toString().equals("Hourly"))
+                {
+                    fileToRead = "/Users/DillanAsbury/Desktop/HourlyEmployees.txt";
+                }
+                else if(selected.toString().equals("Salaried"))
+                {
+                    System.out.print("Combo box selection not initialized");
+                }
+        
+        System.out.println(fileToRead);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void newEmployeeName2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeName2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeName2ActionPerformed
+
+    private void newEmployeeID2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeID2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeID2ActionPerformed
+
+    private void newEmployeeWeeklySalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeWeeklySalesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeWeeklySalesActionPerformed
+
+    private void submitButtSalPanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtSalPanActionPerformed
+        String empName = newEmployeeName2.getText();
+        String empID = newEmployeeID2.getText();
+        String basePay = newEmployeeBasePay.getText();
+        String weeklySales = newEmployeeWeeklySales.getText();
+        double rate = Double.parseDouble(basePay);
+        writeToFile = "Name: "+ empName +"\tEmployee ID Number: "+ empID +"\tBase Pay: " + basePay + "Weekly Sales: " + weeklySales + "\n";
+        Employee aPerson = new HourlyEmployee(empID,empName,40, rate);
+        displayData.setText(aPerson.toString());
+        newEmployeeName2.setText("");
+        newEmployeeID2.setText("");
+        newEmployeeBasePay.setText("");
+        newEmployeeWeeklySales.setText("");
+        String data = writeToFile;
+        try
+        {
+            BufferedWriter reader = new BufferedWriter(new FileWriter(new File("/Users/DillanAsbury/Desktop/SalariedEmployees.txt"),true));
+            reader.write(data);
+            reader.newLine();
+            reader.close();
+            
+            
+            System.out.println("Done!!");
+        } catch(IOException Evt)
+                {
+                    System.out.println("Error is " + Evt);
+                }
+    }//GEN-LAST:event_submitButtSalPanActionPerformed
+
+    private void newEmployeeBasePay2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEmployeeBasePay2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newEmployeeBasePay2ActionPerformed
+
+    private void searchBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchBarMouseClicked
+        searchBar.setBackground(Color.white);
+    }//GEN-LAST:event_searchBarMouseClicked
+
+    private void searchBarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchBarMouseEntered
+
+    }//GEN-LAST:event_searchBarMouseEntered
+
+    private void showAllCommButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAllCommButtActionPerformed
+        showAllCommField.setVisible(true);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("/Users/DillanAsbury/Desktop/CommissionedEmployees.txt"));
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            while (line != null) 
+                {
+                    sb.append(line).append("\n");
+                    line = br.readLine();
+                }
+            
+            String everything = sb.toString();
+            br.close();
+            showAllCommField.setText(everything);
+            } catch(IOException Evt)
+                {
+                    System.out.println("Error is " + Evt);
+                }  
+    }//GEN-LAST:event_showAllCommButtActionPerformed
     
     /**
      * @param args the command line arguments
@@ -243,6 +827,7 @@ public class EmployeeData extends javax.swing.JFrame {
                 new EmployeeData().setVisible(true);
             }
         });
+     
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -252,21 +837,53 @@ public class EmployeeData extends javax.swing.JFrame {
     private javax.swing.JButton backButtSelEmpPan;
     private javax.swing.JButton backButtonCommPan;
     private javax.swing.JButton commissionedButton;
+    private javax.swing.JTextArea displayData;
+    private javax.swing.JLabel displayError;
+    private javax.swing.JTextArea displayResult;
     private javax.swing.JLabel employeeDataSytem;
-    private javax.swing.JButton findEmployee;
     private javax.swing.JButton hourlyButton;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel3CommPan;
+    private javax.swing.JLabel jLabel3CommPan1;
+    private javax.swing.JLabel jLabel3CommPan2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField newEmployeeBasePay;
+    private javax.swing.JTextField newEmployeeBasePay2;
+    private javax.swing.JTextField newEmployeeHourlyRate;
+    private javax.swing.JTextField newEmployeeID;
+    private javax.swing.JTextField newEmployeeID1;
+    private javax.swing.JTextField newEmployeeID2;
+    private javax.swing.JTextField newEmployeeName;
+    private javax.swing.JTextField newEmployeeName1;
+    private javax.swing.JTextField newEmployeeName2;
+    private javax.swing.JTextField newEmployeeWeeklySales;
     private javax.swing.JPanel panelAddEmployee;
     private javax.swing.JPanel panelCommissioned;
-    private javax.swing.JPanel panelFindEmployee;
     private javax.swing.JPanel panelHourly;
     private javax.swing.JPanel panelMenu;
     private javax.swing.JPanel panelSalaried;
     private javax.swing.JButton salariedButton;
     private javax.swing.JTextField searchBar;
     private javax.swing.JButton searchButton;
+    private javax.swing.JButton showAllCommButt;
+    private javax.swing.JTextArea showAllCommField;
+    private javax.swing.JButton submitButtCommPan;
+    private javax.swing.JButton submitButtHourPan;
+    private javax.swing.JButton submitButtSalPan;
     // End of variables declaration//GEN-END:variables
 }
