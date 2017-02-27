@@ -1,7 +1,7 @@
 package gui3;
 import java.awt.Color;
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 public class EmployeeData extends javax.swing.JFrame {
     /**
      * Creates new form EmployeeData
@@ -9,11 +9,13 @@ public class EmployeeData extends javax.swing.JFrame {
     static String fileToRead;
     static String writeToFile;
     static String allLines;
+    static ArrayList array;
     
     public EmployeeData() {
         initComponents();
         displayError.setVisible(false);
         showAllCommField.setVisible(false);
+        array = new ArrayList();
     }
 
     /**
@@ -38,6 +40,7 @@ public class EmployeeData extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         displayError = new javax.swing.JLabel();
+        deleteEmpButton = new javax.swing.JButton();
         panelAddEmployee = new javax.swing.JPanel();
         hourlyButton = new javax.swing.JButton();
         commissionedButton = new javax.swing.JButton();
@@ -121,7 +124,6 @@ public class EmployeeData extends javax.swing.JFrame {
         employeeDataSytem.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         employeeDataSytem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        displayResult.setEditable(false);
         displayResult.setColumns(20);
         displayResult.setRows(1);
         jScrollPane2.setViewportView(displayResult);
@@ -139,14 +141,17 @@ public class EmployeeData extends javax.swing.JFrame {
 
         displayError.setText("* Please enter a 9 digit ID number.");
 
+        deleteEmpButton.setText("Delete Employee");
+        deleteEmpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteEmpButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
         panelMenu.setLayout(panelMenuLayout);
         panelMenuLayout.setHorizontalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMenuLayout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane2)
-                .addContainerGap())
             .addGroup(panelMenuLayout.createSequentialGroup()
                 .addComponent(employeeDataSytem, javax.swing.GroupLayout.PREFERRED_SIZE, 810, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -154,48 +159,59 @@ public class EmployeeData extends javax.swing.JFrame {
                 .addGap(280, 280, 280)
                 .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
                         .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(26, 26, 26)
-                                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(searchBar)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(displayError, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(searchBar)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(displayError, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panelMenuLayout.createSequentialGroup()
                         .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMenuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+            .addGroup(panelMenuLayout.createSequentialGroup()
+                .addGap(321, 321, 321)
+                .addComponent(deleteEmpButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuLayout.createSequentialGroup()
-                .addComponent(employeeDataSytem, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(employeeDataSytem, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(addEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(jLabel12)
+                    .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(displayError, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchButton)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deleteEmpButton)
                 .addContainerGap())
         );
 
@@ -334,7 +350,7 @@ public class EmployeeData extends javax.swing.JFrame {
                             .addComponent(newEmployeeHourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
                 .addComponent(submitButtHourPan)
                 .addGap(33, 33, 33))
         );
@@ -670,7 +686,7 @@ public class EmployeeData extends javax.swing.JFrame {
                     if(currentLine.contains("Employee ID Number: " + empID))
                     {
                         String result = currentLine.split("Name: ")[1];
-                        displayResult.setText("Employee Found!\nName: " + result);
+                        displayResult.setText("Name: " + result);
                     }
                 }
             } catch(FileNotFoundException Evt)
@@ -704,6 +720,8 @@ public class EmployeeData extends javax.swing.JFrame {
         double rate = Double.parseDouble(hourlyRate);
         writeToFile = "Name: "+ empName +"\tEmployee ID Number: "+ empID +"\tBase Pay: " + hourlyRate+ "\n";
         Employee aPerson = new HourlyEmployee(empID,empName,40, rate);
+        array.add(aPerson);
+        System.out.println(array.toString());
         displayData.setText(aPerson.toString());
         newEmployeeName1.setText("");
         newEmployeeID1.setText("");
@@ -816,6 +834,15 @@ public class EmployeeData extends javax.swing.JFrame {
                     System.out.println("Error is " + Evt);
                 }  
     }//GEN-LAST:event_showAllCommButtActionPerformed
+
+    private void deleteEmpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEmpButtonActionPerformed
+        String result = displayResult.getText();
+        if(array.contains(result))
+        {
+            array.remove(result);
+            System.out.println(array.toString());
+        }
+    }//GEN-LAST:event_deleteEmpButtonActionPerformed
     
     /**
      * @param args the command line arguments
@@ -837,6 +864,7 @@ public class EmployeeData extends javax.swing.JFrame {
     private javax.swing.JButton backButtSelEmpPan;
     private javax.swing.JButton backButtonCommPan;
     private javax.swing.JButton commissionedButton;
+    private javax.swing.JButton deleteEmpButton;
     private javax.swing.JTextArea displayData;
     private javax.swing.JLabel displayError;
     private javax.swing.JTextArea displayResult;
